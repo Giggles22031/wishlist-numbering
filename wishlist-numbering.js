@@ -1,63 +1,60 @@
 (function() {
-    // Function to add numbers to wishlist items
     function addNumbersToWishlist() {
         const wishlistItems = document.querySelectorAll('.Panel');
-        
+
         wishlistItems.forEach(item => {
             const index = item.getAttribute('data-index');
-                
-            if (index && !item.querySelector('.wishlist-number')) {
+
+            if (index && !item.querySelector('.wishlist-number-box')) {
                 const adjustedIndex = parseInt(index) + 1;
-                
-                const numberSpan = document.createElement('span');
-                numberSpan.textContent = `#${adjustedIndex}`;
-                numberSpan.classList.add('wishlist-number');
-                numberSpan.style.fontWeight = 'bold';
-                numberSpan.style.color = 'white';
-                numberSpan.style.marginLeft = '10px';
 
-                const title = item.querySelector('.Fuz2JeT4RfI-');
-                if (title) {
-                    title.appendChild(numberSpan);
-                }
+                // Make a number box with the item position
+                const numberBox = document.createElement('div');
+                numberBox.textContent = `#${adjustedIndex}`;
+                numberBox.classList.add('wishlist-number-box');
+
+                // Style the number box so it stands out
+                Object.assign(numberBox.style, {
+                    position: 'absolute',
+                    top: '10px',
+                    left: '10px',
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    color: 'white',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    padding: '4px 8px',
+                    borderRadius: '6px',
+                    zIndex: '10'
+                });
+
+                // Attach it to the wishlist item
+                item.style.position = 'relative'; // Make sure it can hold absolutely positioned elements
+                item.appendChild(numberBox);
             }
         });
     }
 
-    // Preload the first 100 wishlist items immediately
-    function preloadFirst100() {
-        let intervalCount = 0;
-        const interval = setInterval(() => {
-            addNumbersToWishlist(); // Apply the numbers
-            
-            const wishlistItems = document.querySelectorAll('.Panel');
-            if (wishlistItems.length >= 100) {
-                clearInterval(interval); // Stop the interval once we reach 100 items
-            }
-            intervalCount++;
-            if (intervalCount > 10) { // Avoid excessive looping
-                clearInterval(interval);
-            }
-        }, 500); // Run every 500ms to check for items
+    function continuouslyCheckForNewItems() {
+        setInterval(() => {
+            addNumbersToWishlist();
+        }, 500); // Keep checking for new items every half a second
     }
 
-    // Run on initial page load to preload the first 100 items
+    function observeWishlistChanges() {
+        const wishlistContainer = document.querySelector('.your-wishlist-container-selector'); // Update this selector as needed
+        if (!wishlistContainer) return;
+
+        const observer = new MutationObserver(() => {
+            addNumbersToWishlist();
+        });
+
+        // Watch for changes in the wishlist container
+        observer.observe(wishlistContainer, { childList: true, subtree: true });
+    }
+
     setTimeout(() => {
-        preloadFirst100();
-    }, 500); // Wait a little before starting
-
-    // Use MutationObserver to detect when new items are added dynamically
-    const observer = new MutationObserver(() => {
-        addNumbersToWishlist(); // Update numbers as new items are added
-    });
-
-    // Observe the container of the wishlist for changes (e.g., when new panels are added)
-    const wishlistContainer = document.querySelector('.your-wishlist-container-selector'); // Replace with actual container selector
-    if (wishlistContainer) {
-        observer.observe(wishlistContainer, {
-            childList: true, // Listen for new child elements being added
-            subtree: true // Also listen for changes within the child elements
-        });
-    }
-
+        addNumbersToWishlist(); // Run once at the start
+        continuouslyCheckForNewItems(); // Keep scanning every 500ms
+        observeWishlistChanges(); // Watch for new items being added
+    }, 500);
 })();
