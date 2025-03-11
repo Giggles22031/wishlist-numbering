@@ -1,19 +1,14 @@
 (function() {
     // Function to add numbers to wishlist items
     function addNumbersToWishlist() {
-        // Get all wishlist items
         const wishlistItems = document.querySelectorAll('.Panel');
         
         wishlistItems.forEach(item => {
-            // Get the 'data-index' attribute from each item
             const index = item.getAttribute('data-index');
                 
-            // Only add a number if it's not already there
             if (index && !item.querySelector('.wishlist-number')) {
-                // Add 1 to the index to start from 1 instead of 0
                 const adjustedIndex = parseInt(index) + 1;
                 
-                // Create a span to show the number
                 const numberSpan = document.createElement('span');
                 numberSpan.textContent = `#${adjustedIndex}`;
                 numberSpan.classList.add('wishlist-number');
@@ -21,7 +16,6 @@
                 numberSpan.style.color = 'white';
                 numberSpan.style.marginLeft = '10px';
 
-                // Find the title of the item and append the number to it
                 const title = item.querySelector('.Fuz2JeT4RfI-');
                 if (title) {
                     title.appendChild(numberSpan);
@@ -30,41 +24,39 @@
         });
     }
 
-    // Preload the first 100 wishlist items
+    // Preload the first 100 wishlist items immediately
     function preloadFirst100() {
         let intervalCount = 0;
         const interval = setInterval(() => {
-            addNumbersToWishlist(); // Add numbers to the wishlist items
+            addNumbersToWishlist(); // Apply the numbers
             
             const wishlistItems = document.querySelectorAll('.Panel');
-            // Stop once we've got at least 100 items
             if (wishlistItems.length >= 100) {
-                clearInterval(interval);
+                clearInterval(interval); // Stop the interval once we reach 100 items
             }
             intervalCount++;
-            // Stop after 10 intervals to avoid looping endlessly
-            if (intervalCount > 10) {
+            if (intervalCount > 10) { // Avoid excessive looping
                 clearInterval(interval);
             }
-        }, 500); // Check every 500ms
+        }, 500); // Run every 500ms to check for items
     }
 
-    // Start the preload process after a short delay
+    // Run on initial page load to preload the first 100 items
     setTimeout(() => {
         preloadFirst100();
-    }, 500); // Wait a little before starting the preload
+    }, 500); // Wait a little before starting
 
-    // Use MutationObserver to track when new items are added dynamically
+    // Use MutationObserver to detect when new items are added dynamically
     const observer = new MutationObserver(() => {
-        addNumbersToWishlist(); // Add numbers to any new items
+        addNumbersToWishlist(); // Update numbers as new items are added
     });
 
-    // Observe the wishlist container for changes (like when new items are added)
-    const wishlistContainer = document.querySelector('.your-wishlist-container-selector'); // Replace with actual selector
+    // Observe the container of the wishlist for changes (e.g., when new panels are added)
+    const wishlistContainer = document.querySelector('.your-wishlist-container-selector'); // Replace with actual container selector
     if (wishlistContainer) {
         observer.observe(wishlistContainer, {
-            childList: true, // Look for new child elements being added
-            subtree: true // Watch for changes in any nested elements
+            childList: true, // Listen for new child elements being added
+            subtree: true // Also listen for changes within the child elements
         });
     }
 
