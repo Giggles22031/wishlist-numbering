@@ -20,6 +20,7 @@ This is a theme using [Steambrew](https://steambrew.app/) made for [Zerkaa](http
 
    ```
    wishlist-numbering/
+      ├── README.md
       ├── skin.json
       ├── webkit.css
       └── wishlist-numbering.js
