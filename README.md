@@ -3,7 +3,7 @@ This is a theme using [Steambrew](https://steambrew.app/) made for [Zerkaa](http
 
 
 
-![Picture showing the numbers in the top left of a Steam wishlist](https://i.imgur.com/4FiaBPL.png)
+![Picture showing the numbers in the top left of a Steam wishlist](https://i.imgur.com/6C7l817.png)
 
 ---
 
