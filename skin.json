@@ -13,12 +13,12 @@
     ],
     "UseDefaultPatches": true,
     "author": "Giggles",
-    "description": "Theme made for Zerkaa to help with the counting for the wishlist series",
+    "description": "Theme made for Zerkaa to help with the counting on the wishlist series",
     "name": "wishlist-numbering",
     "version": "1.0.0", 
     "github": {
         "owner": "Giggles22031",
-        "repo_name": "https://github.com/Giggles22031/wishlist-numbering"
+        "repo_name": "wishlist-numbering"
     },
     "tags": [
         "wishlist", "numbering"
